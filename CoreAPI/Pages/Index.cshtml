@@ -1,0 +1,100 @@
+﻿@page
+@using CoreAPI.Classes;
+@using CoreAPI.wwwroot.Pages
+@model IndexModel
+@{
+      
+    ViewData["Title"] = "Consulta";
+    bool mostrarModal = false;
+    bool mostrarAlerta = false;
+    var req = Request.Query["Query"].ToString();
+
+    if (req != null && Model.pessoa.StatusObj == "CPF não localizado.")
+    {
+        mostrarModal = true;
+        Model.pessoa.StatusObj = string.Empty;
+    }
+
+    if (Model.pessoa.Status == "CPF localizado.")
+    {
+        mostrarAlerta = true;
+    }
+
+   
+
+}
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <title>API Consulta CPF</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="~/js/funcoes.js")'></script>
+
+    <script>
+        window.mostrarModal = @Html.Raw(mostrarModal.ToString().ToLower());
+        window.mostrarAlerta = @Html.Raw(mostrarAlerta.ToString().ToLower());
+        window.req = '@req';
+    </script>
+
+</head>
+
+<body>
+    <div class="container">
+        <div class="container mt-5">
+            <center><h3>Consulte seu CPF</h3></center>
+            <form id="cpfForm" onsubmit="validateForm(event)" method="GET" action="/">
+                <div class="form-group">
+                    <label for="Query">CPF</label>
+                    <input id="numberInput" type="text" title="Informe somente números." oninput="process(this)" inputmode="numeric" pattern="[0-9]+" minlength="11" maxlength="14" required placeholder="Digite seu CPF: 99999999999" class="form-control" name="Query" value="@Request.Query["Query"]" />
+                </div>
+                <button id="submitButton" type="submit" class="btn btn-primary btn-block">Consultar</button>
+            </form>
+
+            <!-- Modal -->
+            <div class="modal fade" id="Modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-sm">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h3 class="modal-title fs-4" id="exampleModalSmLabel">
+                                <img src='@Url.Content("~/images/warning-icon.png")' alt="Ícone" style="width: 32px; height: 32px; margin-right: 10px;">
+                                Consulta
+                            </h3>
+                        </div>
+                        <div class="modal-body">
+                            CPF não localizado na Base de Dados.
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Fechar</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <br />
+            <div id="result" class="panel panel-default">
+                <div class="panel-heading">Dados</div>
+                <h5>&nbsp;&nbsp;&nbsp;CPF: @Model.pessoa.CPF </h5>
+                <h5>&nbsp;&nbsp;&nbsp;Nome: @Model.pessoa.Nome</h5>
+                <h5>&nbsp;&nbsp;&nbsp;Genero: @Model.pessoa.Genero</h5>
+                <h5>&nbsp;&nbsp;&nbsp;Data Nascimento: @Model.pessoa.DataNascimento</h5>
+            </div>
+
+            <div id="Alerta" class="alert alert-success" role="alert" hidden ="hidden">
+                CPF localizado na Base de Dados.
+            </div>
+
+            <div id="Alerta2" class="alert alert-warning" role="alert" hidden="hidden">
+                CPF não localizado na Base de Dados.
+            </div>
+
+
+        </div>
+    </div>
+</body>
+
+</html>
