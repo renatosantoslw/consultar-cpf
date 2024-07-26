@@ -1,0 +1,8 @@
+#PanelErro {
+    width: 80%; /* Define a largura do painel */
+    margin: 0 auto; /* Centraliza o painel horizontalmente */
+    position: absolute;
+    top: 20%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}

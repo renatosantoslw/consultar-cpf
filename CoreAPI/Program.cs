@@ -1,10 +1,11 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
-using CoreAPI.Models;
+using CoreAPI.Classes;
 using CoreAPI.Controllers;
 using CoreAPI.Context;
 
 var builder = WebApplication.CreateBuilder(args);
+builder.Services.AddSingleton<Erros>();
 
 builder.Services.AddDirectoryBrowser();
 builder.Services.AddRazorPages();
@@ -30,7 +31,7 @@ builder.Logging.AddFilter("Microsoft.EntityFrameworkCore.Database.Command", LogL
 builder.Logging.AddFilter("Microsoft.Hosting.Lifetime", LogLevel.Warning);
 
 var app = builder.Build();
-await AsseguraDBExiste(app.Services, app.Logger);
+await AsseguraDBExiste(app.Services, app.Logger, app.Services.GetRequiredService<Erros>());
 
 app.MapControllers(); 
 app.MapRazorPages();
@@ -43,13 +44,24 @@ Maps.GetMaps(app);
 
 app.Run();
 
-async Task AsseguraDBExiste(IServiceProvider services, ILogger logger)
+async Task AsseguraDBExiste(IServiceProvider services, ILogger logger, Erros? erros)
 {
     logger.LogInformation($"Garantindo que o banco de dados exista e esteja na string de conexão...");
-    using var db = services.CreateScope().ServiceProvider.GetRequiredService<RegistroDbContext>();
-    await db.Database.EnsureCreatedAsync();
-    await db.Database.MigrateAsync();
-    db.Database.SetCommandTimeout(3000);
+    try
+    {
+        using var db = services.CreateScope().ServiceProvider.GetRequiredService<RegistroDbContext>();
+        await db.Database.EnsureCreatedAsync();
+        await db.Database.MigrateAsync();
+        db.Database.SetCommandTimeout(3000);
+    }
+    catch (Exception ex)
+    {
+        erros.Cabecalho = $"Erro Critico no Servidor.";
+        erros.Codigo = $"500";
+        erros.Descricao = $"{ex.Message}";
+        logger.LogInformation($"{ex.Message}");          
+    }
+    
 }
 
 

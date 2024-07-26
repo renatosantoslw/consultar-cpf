@@ -1,0 +1,47 @@
+﻿@page
+@using CoreAPI.Classes;
+@using CoreAPI.wwwroot.Pages
+@model ErroModel
+@{
+    ViewData["Title"] = "Erro";
+
+   // Response.Redirect("/");
+
+}
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <title>Erro</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="/js/funcoes.js" )'></script>
+</head>
+
+<body>
+    <div  class="container">
+        <div class="container mt-5">
+
+            <div id="PanelErro" class="alert alert-danger role="alert">
+                <h4 class="alert-heading">@Model.pCabecalho</h4>
+                <pre>@Model.pDescricao</pre>
+                <hr>
+                <p class="mb-0">Codigo: @Model.pCodigo</p>
+            </div>
+
+        </div>
+    </div>
+
+
+
+
+
+
+
+</body>
+
+</html>

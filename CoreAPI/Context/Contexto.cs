@@ -21,7 +21,7 @@ namespace CoreAPI.Context
         public RegistroDbContext(DbContextOptions<RegistroDbContext> options)
             : base(options)
         {
-            base.Database.SetCommandTimeout(3000);
+            base.Database.SetCommandTimeout(500);
         }
 
 
@@ -33,7 +33,7 @@ namespace CoreAPI.Context
                 "Database=BANCOTXT;" +
                 "Uid=sa;Pwd=epilef;" +
                 "TrustServerCertificate=True;" +
-                "Connection Timeout=3000";
+                "Connection Timeout=30";
 
             optionsBuilder.UseSqlServer(connectionString);
         }
