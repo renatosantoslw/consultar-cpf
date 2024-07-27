@@ -23,7 +23,7 @@ namespace CoreAPI.Data.Context
         public RegistroDbContext(DbContextOptions<RegistroDbContext> options)
             : base(options)
         {
-            base.Database.SetCommandTimeout(5);
+            base.Database.SetCommandTimeout(120);
         }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
