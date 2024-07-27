@@ -1,14 +1,22 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
-using CoreAPI.Classes;
 using CoreAPI.Controllers;
-using CoreAPI.Context;
+using CoreAPI.Logs;
+using CoreAPI.Funcoes;
+using CoreAPI.Data.Context;
+
+ErrosLogGravar erroLogs = new ErrosLogGravar();
+ReinicializarAPI reStartAPI = new ReinicializarAPI();
 
 var builder = WebApplication.CreateBuilder(args);
-builder.Services.AddSingleton<Erros>();
+var configuration = builder.Configuration;
+
+builder.Services.AddSingleton<ErrosWiew>();
 
 builder.Services.AddDirectoryBrowser();
 builder.Services.AddRazorPages();
+builder.Services.AddDbContext<RegistroDbContext>(options =>
+options.UseSqlServer(configuration.GetConnectionString("DefaultConnection")));
 
 // Registrar o contexto do banco de dados
 builder.Services.AddDbContext<RegistroDbContext>();
@@ -24,45 +32,53 @@ builder.Services.AddSwaggerGen(options =>
     });
 });
 
+
 //Oculta alguns logs
 //builder.Logging.AddFilter("Microsoft.EntityFrameworkCore.Migrations", LogLevel.Warning);
 //builder.Logging.AddFilter("CoreAPI", LogLevel.Warning);
-builder.Logging.AddFilter("Microsoft.EntityFrameworkCore.Database.Command", LogLevel.Warning);
-builder.Logging.AddFilter("Microsoft.Hosting.Lifetime", LogLevel.Warning);
+builder.Logging.AddFilter("Microsoft.EntityFrameworkCore.Database.Command", LogLevel.None);
+builder.Logging.AddFilter("Microsoft.Hosting.Lifetime", LogLevel.None);
+builder.Logging.AddFilter("Microsoft.EntityFrameworkCore.Database.Connection", LogLevel.None);
+builder.Logging.AddFilter("Microsoft.EntityFrameworkCore.Query", LogLevel.None);
+builder.Logging.AddFilter("Microsoft.AspNetCore.Diagnostics.DeveloperExceptionPageMiddleware", LogLevel.None);
 
-var app = builder.Build();
-await AsseguraDBExiste(app.Services, app.Logger, app.Services.GetRequiredService<Erros>());
+ var app = builder.Build();
 
-app.MapControllers(); 
+app.MapControllers();
 app.MapRazorPages();
 app.UseStaticFiles();
 app.UseRouting();
 app.MapSwagger();
 app.UseSwaggerUI();
-
 Maps.GetMaps(app);
+
+await Task.Delay(15000);
+await AsseguraDBExiste(app.Services, app.Logger, app.Services.GetRequiredService<ErrosWiew>(), configuration);
 
 app.Run();
 
-async Task AsseguraDBExiste(IServiceProvider services, ILogger logger, Erros? erros)
+async Task AsseguraDBExiste(IServiceProvider services, ILogger logger, ErrosWiew? erros, IConfiguration configuration)
 {
-    logger.LogInformation($"Garantindo que o banco de dados exista e esteja na string de conexão...");
+    logger.LogInformation($"Estabelecendo conexão com o Banco de Dados...");
     try
     {
         using var db = services.CreateScope().ServiceProvider.GetRequiredService<RegistroDbContext>();
-        await db.Database.EnsureCreatedAsync();
+        var bancoExiste = await db.Database.EnsureCreatedAsync();
         await db.Database.MigrateAsync();
-        db.Database.SetCommandTimeout(3000);
+        db.Database.SetCommandTimeout(5);
+        logger.LogInformation("Banco de Dados conectado/criado com sucesso...");
     }
     catch (Exception ex)
-    {
-        erros.Cabecalho = $"Erro Critico no Servidor.";
-        erros.Codigo = $"500";
-        erros.Descricao = $"{ex.Message}";
-        logger.LogInformation($"{ex.Message}");          
+    {   
+        erroLogs.GerarLogErro(ex, "Program", "AsseguraDBExiste");
+        logger.LogCritical($"Erro: {ex.Message}");
+        logger.LogCritical($"Api sera reinicializada.");
+        await Task.Delay(3000);       
+        reStartAPI.Reiniciar();
     }
     
 }
+
 
 
 

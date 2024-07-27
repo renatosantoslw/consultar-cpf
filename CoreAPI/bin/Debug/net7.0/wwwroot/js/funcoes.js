@@ -22,8 +22,6 @@ $(document).ready(function () {
 });
 
 
-
-
 function process(input) {
     let value = input.value;
     let numbers = value.replace(/[^0-9]/g, "");
@@ -39,7 +37,6 @@ function process(input) {
     }
 
 }
-
 
 function validateForm(event) {
 

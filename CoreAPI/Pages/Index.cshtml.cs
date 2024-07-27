@@ -1,37 +1,32 @@
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using CoreAPI.Models;
-using CoreAPI.Classes;
 using Newtonsoft.Json;
-using static System.Runtime.InteropServices.JavaScript.JSType;
-
+using CoreAPI.Logs;
+using CoreAPI.Data.Entity;
+using CoreAPI.Data.Models;
 
 namespace CoreAPI.wwwroot.Pages
 {
     public class IndexModel : PageModel
-    {
-        private readonly Erros? _erros;
+    {       
+        private readonly ErrosWiew? _errosFront;
+        private RegistroPessoa? apiResponse = new();
+        public Pessoas? pessoa = new();
 
-        public IndexModel(Erros? erros)
+
+        public IndexModel(ErrosWiew? erros)
         {
-            _erros = erros;
+            _errosFront = erros;
         }
 
-        public string statusCode = string.Empty;
-        public Pessoas? pessoa = new();    
-        RegistroPessoa? apiResponse = new();
-
         public async Task OnGetAsync()
-        {
-          
-            // Verifique se há erros e redirecione se necessário
-            if (_erros != null && !string.IsNullOrEmpty(_erros.Descricao))           
+        {       
+  
+            if (_errosFront != null && !string.IsNullOrEmpty(_errosFront.Descricao))           
             {
-                // Redireciona para a página de erro, passando parâmetros se necessário
                 Response.Redirect("/Erro");
                 return;
             }
-
-            
+          
             var cpfQuery = Request.Query["Query"].ToString();
 
             if (!string.IsNullOrEmpty(cpfQuery))
@@ -44,19 +39,16 @@ namespace CoreAPI.wwwroot.Pages
                     Console.ForegroundColor = ConsoleColor.Green;
                     Console.WriteLine($"CPF Localizado: {cpfQuery}");
                     Console.ResetColor();
-                    pessoa.Status = apiResponse.Status = "CPF localizado.";
-                    pessoa.CPF = apiResponse.CPF;
-                    pessoa.Nome = apiResponse.Nome;
-                    pessoa.Genero = apiResponse.Genero;
-                    pessoa.DataNascimento = apiResponse.DataNascimento;
-              
+
+                    pessoa = Pessoas.FromRegistroPessoa(apiResponse);                 
+                    pessoa.Status  = "CPF localizado.";          
                 }
                 else
                 {
                     Console.ForegroundColor = ConsoleColor.Red;
                     Console.WriteLine($"Não Localizado: {cpfQuery}");
                     Console.ResetColor();
-                    pessoa.StatusObj = "CPF não localizado.";                
+                    pessoa.Status = "CPF não localizado.";                
                 }               
             }
         }
@@ -66,32 +58,77 @@ namespace CoreAPI.wwwroot.Pages
             var apiUrl = $"http://localhost:5000/getByCPF/{cpf}"; // Substitua pela URL real
 
             using (var httpClient = new HttpClient())
-            {
-                var response = await httpClient.GetAsync(apiUrl);
+            {          
                 
-                if(response.StatusCode == System.Net.HttpStatusCode.InternalServerError)
+                var response = await httpClient.GetAsync(apiUrl);
+
+                switch (response.StatusCode)
                 {
-                    _erros.Cabecalho = $"Erro Critico no Servidor.";
-                    _erros.Codigo = $"500";
-                    _erros.Descricao = $"InternalServerError";
-                    Response.Redirect("/Erro");
-                    return null;
+                    case System.Net.HttpStatusCode.OK:
+                        var jsonResponse = await response.Content.ReadAsStringAsync();
+                        return JsonConvert.DeserializeObject<RegistroPessoa>(jsonResponse);
+                     
+                    case System.Net.HttpStatusCode.InternalServerError:
+                        Console.ForegroundColor = ConsoleColor.Red;
+                        Console.WriteLine($"InternalServerError");
+                        Console.ResetColor();
+
+                        _errosFront.Codigo = "500";
+                        _errosFront.Descricao = "Erro interno no servidor.";
+                        _errosFront.Cabecalho = "Erro";
+                        Response.Redirect("/Erro");
+                        break;
+
+                    case System.Net.HttpStatusCode.BadRequest:
+                        Console.ForegroundColor = ConsoleColor.Red;
+                        Console.WriteLine($"BadRequest");
+                        Console.ResetColor();
+
+                        _errosFront.Codigo = "400";
+                        _errosFront.Descricao = "Solicitação inválida.";
+                        _errosFront.Cabecalho = "Erro";
+                        Response.Redirect("/Erro");
+                        break;
+
+                    case System.Net.HttpStatusCode.Unauthorized:
+                        Console.ForegroundColor = ConsoleColor.Red;
+                        Console.WriteLine($"Unauthorized");
+                        Console.ResetColor();
+
+                        _errosFront.Codigo = "401";
+                        _errosFront.Descricao = "Não autorizado. Verifique suas credenciais.";
+                        _errosFront.Cabecalho = "Erro";
+                        Response.Redirect("/Erro");
+                        break;
+
+                    case System.Net.HttpStatusCode.Forbidden:
+                        Console.ForegroundColor = ConsoleColor.Red;
+                        Console.WriteLine($"Forbidden");
+                        Console.ResetColor();
+
+                        _errosFront.Codigo = "403";
+                        _errosFront.Descricao = "Acesso proibido. Você não tem permissão.";
+                        _errosFront.Cabecalho = "Erro";
+                        Response.Redirect("/Erro");
+                        break;
+
+                    case System.Net.HttpStatusCode.MethodNotAllowed:
+                        Console.ForegroundColor = ConsoleColor.Red;
+                        Console.WriteLine($"MethodNotAllowed");
+                        Console.ResetColor();
+
+                        _errosFront.Codigo = "405";
+                        _errosFront.Descricao = "Método não permitido.";
+                        _errosFront.Cabecalho = "Erro";
+                        Response.Redirect("/Erro");
+                        break;
+                          
                 }
 
-               
-                if (response.IsSuccessStatusCode)
-                {
-                    var jsonResponse = await response.Content.ReadAsStringAsync();
-                    return JsonConvert.DeserializeObject<Models.RegistroPessoa>(jsonResponse);                  
-                }           
-                return null;
+                return null;                                     
             }
 
         }
-
-       
-
-
-
+  
     }
 }

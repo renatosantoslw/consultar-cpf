@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace CoreAPI.Models
+namespace CoreAPI.Data.Entity
 {
     public class RegistroPessoa
     {
@@ -21,4 +21,6 @@ namespace CoreAPI.Models
         [Column(TypeName = "nchar(10)")]
         public string? Status { get; set; }
     }
+
+
 }

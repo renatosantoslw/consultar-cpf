@@ -1,28 +1,24 @@
 ﻿@page
-@using CoreAPI.Classes;
 @using CoreAPI.wwwroot.Pages
 @model IndexModel
-@{
-      
+@{      
     ViewData["Title"] = "Consulta";
+
     bool mostrarModal = false;
     bool mostrarAlerta = false;
+
     var req = Request.Query["Query"].ToString();
 
-    if (req != null && Model.pessoa.StatusObj == "CPF não localizado.")
+    if (req != null && Model.pessoa.Status == "CPF não localizado.")
     {
         mostrarModal = true;
-        Model.pessoa.StatusObj = string.Empty;
-       
-  
+        Model.pessoa.Status = string.Empty;      
     }
 
     if (Model.pessoa.Status == "CPF localizado.")
     {
         mostrarAlerta = true;
-    }
-
-   
+    }  
 
 }
 <!DOCTYPE html>

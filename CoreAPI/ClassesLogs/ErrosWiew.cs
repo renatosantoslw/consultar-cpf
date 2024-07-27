@@ -1,10 +1,11 @@
-﻿namespace CoreAPI.Classes
+﻿namespace CoreAPI.Logs
 {
-    public class Erros 
+    public class ErrosWiew
     {
         public string? Cabecalho { get; set; } = null;
         public string? Codigo { get; set; } = null;
         public string? Descricao { get; set; } = null;
+        public string? Tipo { get; set; } = null;
 
     }
 }

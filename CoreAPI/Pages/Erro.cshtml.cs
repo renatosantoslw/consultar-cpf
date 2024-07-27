@@ -1,4 +1,4 @@
-using CoreAPI.Classes;
+using CoreAPI.Logs;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
@@ -6,13 +6,13 @@ namespace CoreAPI.wwwroot.Pages
 {
     public class ErroModel : PageModel
     {
-        public readonly Erros? _erros;
+        public readonly ErrosWiew? _erros;
 
         public string? pDescricao = null;
         public string? pCabecalho = null;
         public string? pCodigo = null;   
         
-        public ErroModel(Erros erros)
+        public ErroModel(ErrosWiew erros)
         {
             _erros = erros;
 
@@ -31,7 +31,8 @@ namespace CoreAPI.wwwroot.Pages
 
             _erros.Descricao = null;
             _erros.Cabecalho = null;
-            _erros.Codigo = null;   
+            _erros.Codigo = null;
+            _erros.Tipo = null;
         }
     }
 }
