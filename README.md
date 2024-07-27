@@ -1,7 +1,7 @@
 # ConsultarCPF
 Simples projeto de consulta de CPF <br> 
 Back-end: .NET Core 7 - Minimal API <br>
-Front-nd: Razor Pages, HTML, CSS, JS <br>
+Front-end: Razor Pages, HTML, CSS, JS <br>
 ORM: Entity Framework - Migrations automatico <br>
 Banco de Dados: SQL Server <br>
 <hr>
