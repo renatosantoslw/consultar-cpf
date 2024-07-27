@@ -1,7 +1,7 @@
 # ConsultarCPF
 Simples projeto de consulta de CPF <br> 
 Back-end: .NET Core 7 - Minimal API <br>
-Front-nd: Razor Pages, HTML, CSS, JS <br>
+Front-end: Razor Pages, HTML, CSS, JS <br>
 ORM: Entity Framework - Migrations automatico <br>
 Banco de Dados: SQL Server <br>
 <hr>
@@ -18,8 +18,11 @@ Banco de Dados: SQL Server <br>
 ## Servico SQL inicializado
 ![](https://raw.githubusercontent.com/renatosantoslw/ConsultarCPF/main/CoreAPI/wwwroot/images/3.gif)
 
+## Meu Banco de Dados
+![](https://raw.githubusercontent.com/renatosantoslw/ConsultarCPF/main/CoreAPI/wwwroot/images/5.png)
 
-
+## Swagger - Velocidade de Consulta
+![](https://raw.githubusercontent.com/renatosantoslw/ConsultarCPF/main/CoreAPI/wwwroot/images/4.gif)
 
 
 
