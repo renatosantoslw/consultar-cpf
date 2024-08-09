@@ -6,19 +6,13 @@ $(document).ready(function () {
         }, 4000);
     }
 
+
     if (window.mostrarAlerta) {
         $('#Alerta').fadeIn(); // Exibe o alerta com efeito de desvanecimento
         setTimeout(function () {
             $('#Alerta').fadeOut(); // Oculta o alerta com efeito de desvanecimento
         }, 7000); // 3500 milissegundos = 3,5 segundos
-    } else {
-        if (window.req) {
-            $('#Alerta2').fadeIn(); // Exibe o alerta com efeito de desvanecimento
-            setTimeout(function () {
-                $('#Alerta2').fadeOut(); // Oculta o alerta com efeito de desvanecimento
-            }, 7000); // 3500 milissegundos = 3,5 segundos
-        }
-    }
+    }       
 });
 
 

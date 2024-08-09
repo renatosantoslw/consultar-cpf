@@ -1,8 +1,49 @@
 #PanelErro {
-    width: 80%; /* Define a largura do painel */
-    margin: 0 auto; /* Centraliza o painel horizontalmente */
+    width: 80%; 
+    margin: 0 auto; 
     position: absolute;
     top: 20%;
     left: 50%;
     transform: translate(-50%, -50%);
 }
+
+.labelAzul {
+    color: #337ab7;
+    display: inline;
+    margin-right: 0px;
+}
+
+.h5Azul {
+    color: #337ab7;
+}
+
+.labelEspacamento {
+    display: flex;
+    flex-direction: column;
+    padding-left: 15px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    display: inline-block;
+    
+}
+
+.labelValue {
+    display: inline;
+    color: black;
+}
+
+table {
+    border-collapse: collapse;
+    width: 100%;
+}
+
+
+p {
+    color: #337ab7;
+}
+
+table td {
+    text-align: left;
+}
+
+  

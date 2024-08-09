@@ -1,5 +1,5 @@
-﻿using CoreAPI.Data.Context;
-using CoreAPI.Data.Entity;
+﻿using CoreAPI.DataBase.SQLServer.Context;
+using CoreAPI.DataBase.SQLServer.Repositories.Entity;
 using CoreAPI.Logs;
 using Microsoft.EntityFrameworkCore;
 using System.Diagnostics;
@@ -15,6 +15,7 @@ namespace CoreAPI.Controllers
         {
             app.MapGet("/index", () => "Minimal CoreAPI - Rodando...");
 
+            //POST Restarta a API
             app.MapPost("/restartAPI", () =>
             {
                 string exePath = Assembly.GetExecutingAssembly().Location;
@@ -31,10 +32,11 @@ namespace CoreAPI.Controllers
                 Environment.Exit(0);
             })
             .WithName("restartAPI")
-            .ExcludeFromDescription()
+            .ExcludeFromDescription() //Exclui do Swagger
             .WithTags("Restart API");
 
-            app.MapGet("/getByCPF/{cpf}", async (string cpf, RegistroDbContext db) =>
+            //GET Banco de dados JBR_PF - Tabela RegistroPessoas - CPF
+            app.MapGet("/getByCPF/{cpf}", async (string cpf, Context db) =>
             {
                 try
                 {
@@ -58,9 +60,10 @@ namespace CoreAPI.Controllers
             .Produces(StatusCodes.Status400BadRequest)
             .Produces(StatusCodes.Status404NotFound)
             .Produces(StatusCodes.Status500InternalServerError)
-            .WithTags("Consulta Por CPF");
+            .WithTags("Consulta Por CPF - JBR_PF");
 
-            app.MapGet("/getByNome/{nome}", async (string nome, RegistroDbContext db) =>
+            //GET Banco de dados JBR_PF - Tabela RegistroPessoas - Nome
+            app.MapGet("/getByNome/{nome}", async (string nome, Context db) =>
             {
                 try
                 {
@@ -84,8 +87,36 @@ namespace CoreAPI.Controllers
             .Produces(StatusCodes.Status400BadRequest)
             .Produces(StatusCodes.Status404NotFound)
             .Produces(StatusCodes.Status500InternalServerError)
-            .WithTags("Consulta Por Nome");
+            .WithTags("Consulta Por Nome - JBR_PF");
 
+            //GET Banco de dados "DATASUS" - Tabela RegistroPessoaDatasus - CPF
+            app.MapGet("/getByCPFDataSUS/{cpf}", async (string cpf, Context db) =>
+            {
+                try
+                {
+                    if (string.IsNullOrWhiteSpace(cpf))
+                        return Results.BadRequest("CPF não pode ser nulo ou vazio.");
+
+                    var registroDataSUS = await db.RegistroPessoaDatasus
+                        .FirstOrDefaultAsync(r => r.CPF == cpf);
+
+                    return registroDataSUS is not null
+                        ? Results.Ok(registroDataSUS)
+                        : Results.NotFound("CPF DATASUS não localizado.");
+                }
+                catch (Exception ex)
+                {
+                    ErroLogsInstance.GerarLogErro(ex, $"Maps", $"app.MapGet(getByCPFDataSUS) = {cpf}");
+                    return Results.Problem("Ocorreu um erro ao processar a solicitação.");
+                }
+
+            })
+            .WithName("getByCPFDataSUS")
+            .Produces<RegistroPessoaDatasus>(StatusCodes.Status200OK)
+            .Produces(StatusCodes.Status400BadRequest)
+            .Produces(StatusCodes.Status404NotFound)
+            .Produces(StatusCodes.Status500InternalServerError)
+            .WithTags("Consulta Por CPF - 'DATASUS'");
         }
 
         public static ErrosLogGravar ErroLogsInstance

@@ -1,59 +1,72 @@
 ﻿@page
 @using CoreAPI.wwwroot.Pages
 @model IndexModel
-@{      
+@{
     ViewData["Title"] = "Consulta";
 
     bool mostrarModal = false;
     bool mostrarAlerta = false;
 
-    var req = Request.Query["Query"].ToString();
+    string DescricaoModal = string.Empty;
+    string DescricaoAlerta = string.Empty;
+    string CorAlerta = string.Empty;
 
-    if (req != null && Model.pessoa.Status == "CPF não localizado.")
+    var req = Model.CPF;
+
+    if (Model.pessoa.Status == "0" & Model.pessoaDataSUS.Status == "0")
     {
         mostrarModal = true;
-        Model.pessoa.Status = string.Empty;      
+        DescricaoModal = "CPF não localizado em nenhuma das dase de dados.";
+
+        DescricaoAlerta = "CPF não localizado em nenhuma das dase de dados.";
+        CorAlerta = "alert alert-warning";
+        mostrarAlerta = true;
     }
 
-    if (Model.pessoa.Status == "CPF localizado.")
+    if (Model.pessoa.Status == "1")
     {
+        DescricaoAlerta = "CPF localizado na Base de Dados.";
+        CorAlerta = "alert alert-success";
         mostrarAlerta = true;
-    }  
 
+        Model.pessoa.Status = string.Empty;
+        Model.pessoaDataSUS.Status = string.Empty;
+    }  
 }
+
 <!DOCTYPE html>
 <html lang="pt-BR">
-
 <head>
     <title>API Consulta CPF</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/css/bootstrap.min.css">    
+    <script src="/js/jquery.min.js"></script>
+    <script src="/js/bootstrap.min.js"></script>
     <script type="text/javascript" src="/js/funcoes.js")'></script>
-
     <script>
         window.mostrarModal = @Html.Raw(mostrarModal.ToString().ToLower());
         window.mostrarAlerta = @Html.Raw(mostrarAlerta.ToString().ToLower());
         window.req = '@req';
     </script>
-
 </head>
 
 <body>
     <div class="container">
         <div class="container mt-5">
             <center><h3>Consulte seu CPF</h3></center>
+            
+            <!-- Formulario -->
             <form id="cpfForm" onsubmit="validateForm(event)" method="GET" action="/">
                 <div class="form-group">
-                    <label for="Query">CPF</label>
-                    <input id="numberInput" type="text" title="Informe somente números." oninput="process(this)" inputmode="numeric" pattern="[0-9]+" minlength="11" maxlength="14" required placeholder="Digite seu CPF: 99999999999" class="form-control" name="Query" value="@Request.Query["Query"]" />
+                    <label style="font-size:16px;" for="CPF">CPF</label>
+                    <input asp-for="CPF" id="CPF" name="CPF" type="text" title="Informe somente números." oninput="process(this)" inputmode="numeric" pattern="[0-9]+" minlength="11" maxlength="14" required placeholder="Digite seu CPF: 99999999999" class="form-control" value="@Model.pessoa.CPF" />
                 </div>
-                <button id="submitButton" type="submit" class="btn btn-primary btn-block">Consultar</button>
+                <button id="submitButton" name="action" value="submit" type="submit" class="btn btn-primary btn-block">Consultar</button>
             </form>
-
-            <!-- Modal -->
+            
+            <!-- Modal de CPF não Localizado -->
             <div class="modal fade" id="Modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                 <div class="modal-dialog modal-sm">
                     <div class="modal-content">
@@ -64,7 +77,7 @@
                             </h3>
                         </div>
                         <div class="modal-body">
-                            CPF não localizado na Base de Dados.
+                            @DescricaoModal
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-default" data-dismiss="modal">Fechar</button>
@@ -72,27 +85,97 @@
                     </div>
                 </div>
             </div>
-
-            <br />
+   
+            <br/>
+            <!-- Dados -->
             <div id="result" class="panel panel-default">
-                <div class="panel-heading">Dados</div>
-                <h5>&nbsp;&nbsp;&nbsp;CPF: @Model.pessoa.CPF </h5>
-                <h5>&nbsp;&nbsp;&nbsp;Nome: @Model.pessoa.Nome</h5>
-                <h5>&nbsp;&nbsp;&nbsp;Genero: @Model.pessoa.Genero</h5>
-                <h5>&nbsp;&nbsp;&nbsp;Data Nascimento: @Model.pessoa.DataNascimento</h5>
+              <div class="panel-heading">Dados</div>
+                <div class="labelEspacamento">
+                    <table>
+                        <tr>
+                            <td><label class="labelAzul">Nome:</label></td>
+                            <td><span class="labelValue">@Model.pessoa.Nome</span></td>                           
+                        </tr>                  
+                        <tr>
+                            <td><label class="labelAzul">Gênero:</label></td>
+                            <td><span class="labelValue">@Model.pessoa.Genero</span></td>
+                        </tr>
+                        <tr>
+                            <td><label class="labelAzul">Data Nasc:</label></td>
+                            <td><span class="labelValue">@Model.pessoa.DataNascimento</span></td>
+                        </tr>
+                        <tr>
+                            <td><label class="labelAzul">CPF:</label></td>
+                            <td><span class="labelValue">@Model.pessoa.CPF</span></td>
+                        </tr>
+                        <tr>
+                            <td><label class="labelAzul">RG:</label></td>
+                            <td><span class="labelValue">@Model.pessoaDataSUS.RGNumero</span></td>
+                        </tr>
+                        <tr>
+                            <td><label class="labelAzul">Emissor:</label></td>
+                            <td><span class="labelValue">@Model.pessoaDataSUS.RGOrgaoEmisor</span></td>
+                        </tr>
+                        <tr>
+                            <td><label class="labelAzul">RG UF:</label></td>
+                            <td><span class="labelValue">@Model.pessoaDataSUS.RGUF</span></td>
+                        </tr>
+                        <tr>
+                            <td><label class="labelAzul">Pai:</label></td>
+                            <td><span class="labelValue">@Model.pessoaDataSUS.Pai</span></td>
+                        </tr>
+                        <tr>
+                            <td><label class="labelAzul">Mãe:</label></td>
+                            <td><span class="labelValue">@Model.pessoaDataSUS.Mae</span></td>
+                        </tr>
+                        <tr>
+                            <td><label class="labelAzul">Natual:</label></td>
+                            <td><span class="labelValue">@Model.pessoaDataSUS.MunicipioNascimento</span></td>
+                        </tr>
+                        <tr>
+                            <td><label class="labelAzul">Municipio:</label></td>
+                            <td><span class="labelValue">@Model.pessoaDataSUS.Municipio</span></td>
+                        </tr>
+                        <tr>
+                            <td><label class="labelAzul">Endereço:</label></td>
+                            <td><span class="labelValue">@Model.pessoaDataSUS.Logradouro</span></td>
+                        </tr>
+                        <tr>
+                            <td><label class="labelAzul">Numero:</label></td>
+                            <td><span class="labelValue">@Model.pessoaDataSUS.Numero</span></td>
+                        </tr>
+                        <tr>
+                            <td><label class="labelAzul">Bairro:</label></td>
+                            <td><span class="labelValue">@Model.pessoaDataSUS.Bairro</span></td>
+                        </tr>
+                        <tr>
+                            <td><label class="labelAzul">CEP:</label></td>
+                            <td><span class="labelValue">@Model.pessoaDataSUS.CEP</span></td>
+                        </tr>
+                        <tr>
+                            <td><label class="labelAzul">CNS:</label></td>
+                            <td><span class="labelValue">@Model.pessoaDataSUS.CNS</span></td>
+                        </tr>
+                        <tr>
+                            <td><label class="labelAzul">Telefone:</label></td>
+                            <td><span class="labelValue">@Model.pessoaDataSUS.Telefone</span></td>
+                        </tr>
+                        <tr>
+                            <td><label class="labelAzul">Telefone:</label></td>
+                            <td><span class="labelValue">@Model.pessoaDataSUS.TelefoneSecundario</span></td>
+                        </tr>
+                    </table>           
+                 </div>
             </div>
-
-            <div id="Alerta" class="alert alert-success" role="alert" hidden ="hidden">
-                CPF localizado na Base de Dados.
+          
+            <!-- Mensagem Rodape -->
+            <div id="Alerta" class="@CorAlerta" role="alert" hidden ="hidden">
+                @DescricaoAlerta
             </div>
-
-            <div id="Alerta2" class="alert alert-warning" role="alert" hidden="hidden">
-                CPF não localizado na Base de Dados.
-            </div>
-
 
         </div>
     </div>
+
 </body>
 
 </html>

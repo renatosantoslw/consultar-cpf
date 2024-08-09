@@ -6,3 +6,7 @@
     left: 50%;
     transform: translate(-50%, -50%);
 }
+
+label {
+    color: #2A4E6C;
+}
