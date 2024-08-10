@@ -1,0 +1,56 @@
+--DADOS ALEATORIOS
+USE[BANCOTXT]
+
+INSERT INTO [dbo].[RegistroPessoa] (
+    [CPF], 
+    [Nome], 
+    [Genero], 
+    [DataNascimento], 
+    [Status]
+) VALUES (
+    '12345678901', 
+    'João da Silva', 
+    'Masculino', 
+    '01-01-1980', 
+    ''
+);
+
+GO;
+
+INSERT INTO [dbo].[RegistroPessoaDatasus] (
+    [CPF], 
+    [Pai], 
+    [Mae], 
+    [MunicipioNascimento], 
+    [Municipio], 
+    [Logradouro], 
+    [Numero], 
+    [Bairro], 
+    [CEP], 
+    [RGNumero], 
+    [RGOrgaoEmisor], 
+    [RGUF], 
+    [RGDataEmissao], 
+    [CNS], 
+    [Telefone], 
+    [TelefoneSecundario], 
+    [Status]
+) VALUES (
+    '12345678901', 
+    'José da Silva', 
+    'Maria da Silva', 
+    'São Paulo', 
+    'São Paulo', 
+    'Rua Exemplo', 
+    '123', 
+    'Centro', 
+    '01000-000', 
+    '12345678', 
+    'SSP', 
+    'SP', 
+    '01-01-2000', 
+    '123456789123456', 
+    '11987654321', 
+    '11987654322', 
+    ''
+);
