@@ -6,23 +6,21 @@ ORM: Entity Framework - Migrations automatico <br>
 Banco de Dados: SQL Server <br>
 <hr>
 
+## Aparencia 
+![](https://raw.githubusercontent.com/renatosantoslw/ConsultarCPF/main/CoreAPI/wwwroot/images/6.png)
+
 ## Estrutura 
 ![](https://raw.githubusercontent.com/renatosantoslw/ConsultarCPF/main/CoreAPI/wwwroot/images/1.png)
 
-## Funcionalidades 
-![](https://raw.githubusercontent.com/renatosantoslw/ConsultarCPF/main/CoreAPI/wwwroot/images/1.gif)
+## Funcionalidades - Dados Fictícios
+![](https://raw.githubusercontent.com/renatosantoslw/ConsultarCPF/main/CoreAPI/wwwroot/images/2.gif)
 
-## Simulação de parada no servico SQL e criação de logs de erro txt
-![](https://github.com/renatosantoslw/ConsultarCPF/blob/main/CoreAPI/wwwroot/images/2.gif)
-
-## Servico SQL inicializado
-![](https://raw.githubusercontent.com/renatosantoslw/ConsultarCPF/main/CoreAPI/wwwroot/images/3.gif)
-
-## Meu Banco de Dados
+## Banco de Dados
 ![](https://raw.githubusercontent.com/renatosantoslw/ConsultarCPF/main/CoreAPI/wwwroot/images/5.png)
 
-## Swagger - Velocidade de Consulta
-![](https://raw.githubusercontent.com/renatosantoslw/ConsultarCPF/main/CoreAPI/wwwroot/images/4.gif)
+## Swagger
+![](https://raw.githubusercontent.com/renatosantoslw/ConsultarCPF/main/CoreAPI/wwwroot/images/4.png)
+
 
 
 
