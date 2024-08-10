@@ -4,14 +4,36 @@ using CoreAPI.Controllers;
 using CoreAPI.Logs;
 using CoreAPI.Funcoes;
 using CoreAPI.DataBase.SQLServer.Context;
+using CoreAPI.ClassesLogs;
+using Microsoft.AspNetCore.HttpLogging;
+using Microsoft.AspNetCore.HttpOverrides;
+
 
 ErrosLogGravar erroLogs = new ErrosLogGravar();
 ReinicializarAPI reStartAPI = new ReinicializarAPI();
 
 var builder = WebApplication.CreateBuilder(args);
+
+//SerilogStartupExtension.AddSerilogApi(builder);
+
 var configuration = builder.Configuration;
 
+/*
+builder.Services.AddHttpLogging(options =>
+{
+    options.LoggingFields = HttpLoggingFields.RequestPropertiesAndHeaders |
+                            HttpLoggingFields.ResponsePropertiesAndHeaders |
+                            //HttpLoggingFields.ResponseBody |
+                            HttpLoggingFields.ResponseHeaders |
+                            HttpLoggingFields.RequestHeaders |
+                            HttpLoggingFields.RequestBody;
+
+}); 
+*/
+
 builder.Services.AddSingleton<ErrosWiew>();
+
+builder.Services.AddHttpContextAccessor();
 
 builder.Services.AddDirectoryBrowser();
 builder.Services.AddRazorPages();
@@ -41,6 +63,8 @@ builder.Logging.AddFilter("Microsoft.AspNetCore.Diagnostics.DeveloperExceptionPa
 //builder.Logging.AddFilter("CoreAPI", LogLevel.Warning);
 
 var app = builder.Build();
+app.UseMiddleware<ClientIpMiddleware>();
+
 
 app.MapControllers();
 app.MapRazorPages();
@@ -48,6 +72,7 @@ app.UseStaticFiles();
 app.UseRouting();
 app.MapSwagger();
 app.UseSwaggerUI();
+
 Maps.GetMaps(app);
 
 await Task.Delay(10000); // Aguarda 10 segundos, se necessário, para garantir que todos os serviços estejam prontos.
@@ -109,6 +134,10 @@ async Task VerificaDBExiste(IServiceProvider services, ILogger logger, ErrosWiew
         reStartAPI.Reiniciar();
     }
 }
+
+
+
+
 
 
 

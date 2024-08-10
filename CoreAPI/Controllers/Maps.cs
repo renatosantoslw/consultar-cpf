@@ -1,8 +1,11 @@
-﻿using CoreAPI.DataBase.SQLServer.Context;
+﻿using CoreAPI.ClassesLogs;
+using CoreAPI.DataBase.SQLServer.Context;
 using CoreAPI.DataBase.SQLServer.Repositories.Entity;
 using CoreAPI.Logs;
+using Microsoft.CodeAnalysis.Elfie.Serialization;
 using Microsoft.EntityFrameworkCore;
 using System.Diagnostics;
+using System.Net;
 using System.Reflection;
 
 namespace CoreAPI.Controllers
@@ -11,7 +14,8 @@ namespace CoreAPI.Controllers
     {
         private static readonly ErrosLogGravar _errosLog = new ErrosLogGravar();
 
-        public static void GetMaps(this WebApplication app)
+   
+    public static void GetMaps(this WebApplication app)
         {
             app.MapGet("/index", () => "Minimal CoreAPI - Rodando...");
 
@@ -40,6 +44,7 @@ namespace CoreAPI.Controllers
             {
                 try
                 {
+
                     if (string.IsNullOrWhiteSpace(cpf))
                         return Results.BadRequest("CPF não pode ser nulo ou vazio.");
 
@@ -50,6 +55,7 @@ namespace CoreAPI.Controllers
                 }
                 catch (Exception ex)
                 {
+                    
                     ErroLogsInstance.GerarLogErro(ex, $"Maps", $"app.MapGet(getByCPF) = {cpf}");              
                     return null;
                 }
@@ -123,6 +129,8 @@ namespace CoreAPI.Controllers
         {
             get { return _errosLog; }
         }
+
+
 
     }
 
