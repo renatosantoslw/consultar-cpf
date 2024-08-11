@@ -1,0 +1,57 @@
+﻿@page
+@model CoreAPI.Pages.infor.IndexModel
+@{
+    ViewData["Title"] = "Informacoes";
+}
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <title>API Consulta CPF</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+    <script src="/js/jquery.min.js"></script>
+    <script src="/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="/js/funcoes.js" )'></script>
+</head>
+
+<body>
+    <div class="container">
+        <div class="container mt-5">
+            <center><h3>Banco de Dados</h3></center>
+
+            <br />
+            <!-- Dados -->
+            <div id="result" class="panel panel-default">
+                <div class="panel-heading">Dados</div>
+                <div class="labelEspacamento">
+                    <table>
+                        <tr>
+                            <td>
+                                <label class="labelAzul">JBR_PF &nbsp&nbsp&nbsp- </label> <a href="https://drive.google.com/file/d/1_myVGauzm-u3CasrtGYTAknp85d7UENZ/view" target="_blank" data-toggle="tooltip" title="JBR_PF">Download</a><label id="anuncio"></label>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <label class="labelAzul">DATASUS - </label> <a href="https://drive.google.com/file/d/1NLAoOL6fPTNJmlUH5shac0Icv29p6MTK/view" target="_blank" data-toggle="tooltip" title="DATASUS">Download</a><label id="anuncio"></label>
+                            </td>
+                        </tr>
+
+                    </table>
+                </div>
+
+            </div>
+
+            <!-- Mensagem Rodape -->
+            <div id="Alerta" class="alert alert-success" role="alert">
+                <label class="labelAzul">Links disponibilizados por:  </label> <a href="https://leakbase.io/" target="_blank" data-toggle="tooltip" title="https://leakbase.io/">Leakbase.io</a>
+                <label id="anuncio"></label>
+            </div>
+        </div>
+    </div>
+
+</body>
+
+</html>

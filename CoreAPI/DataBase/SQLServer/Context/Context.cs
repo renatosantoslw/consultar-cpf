@@ -1,7 +1,4 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
-using System.Reflection;
 using CoreAPI.DataBase.SQLServer.Repositories.Entity;
 
 namespace CoreAPI.DataBase.SQLServer.Context
@@ -13,8 +10,11 @@ namespace CoreAPI.DataBase.SQLServer.Context
         {
             base.Database.SetCommandTimeout(200);
         }
+
+
         public DbSet<RegistroPessoa> RegistroPessoa { get; set; }
         public DbSet<RegistroPessoaDatasus> RegistroPessoaDatasus { get; set; }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             // Configura os Indices não Clusterizados:

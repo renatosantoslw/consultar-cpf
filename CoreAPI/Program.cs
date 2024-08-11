@@ -38,8 +38,7 @@ builder.Services.AddHttpContextAccessor();
 builder.Services.AddDirectoryBrowser();
 builder.Services.AddRazorPages();
 
-builder.Services.AddDbContext<Context>(options =>
-options.UseSqlServer(configuration.GetConnectionString("DefaultConnection")));
+builder.Services.AddDbContext<Context>();
 
 builder.WebHost.UseUrls("http://0.0.0.0:5000");
 builder.Services.AddEndpointsApiExplorer();
@@ -83,7 +82,7 @@ app.Run();
 async Task VerificaDBExiste(IServiceProvider services, ILogger logger, ErrosWiew? erros, IConfiguration configuration)
 {
     try
-    {
+    {        
         using var scope = services.CreateScope();
         var db = scope.ServiceProvider.GetRequiredService<Context>();
 

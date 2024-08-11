@@ -2,10 +2,8 @@
 using CoreAPI.DataBase.SQLServer.Context;
 using CoreAPI.DataBase.SQLServer.Repositories.Entity;
 using CoreAPI.Logs;
-using Microsoft.CodeAnalysis.Elfie.Serialization;
 using Microsoft.EntityFrameworkCore;
 using System.Diagnostics;
-using System.Net;
 using System.Reflection;
 
 namespace CoreAPI.Controllers
@@ -36,7 +34,7 @@ namespace CoreAPI.Controllers
                 Environment.Exit(0);
             })
             .WithName("restartAPI")
-            .ExcludeFromDescription() //Exclui do Swagger
+            .ExcludeFromDescription() //Oculta do Swagger
             .WithTags("Restart API");
 
             //GET Banco de dados JBR_PF - Tabela RegistroPessoas - CPF

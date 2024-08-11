@@ -6,6 +6,7 @@
 
     bool mostrarModal = false;
     bool mostrarAlerta = false;
+    bool mostrarCarregando = true;
 
     string DescricaoModal = string.Empty;
     string DescricaoAlerta = string.Empty;
@@ -15,6 +16,7 @@
 
     if (Model.pessoa.Status == "0" & Model.pessoaDataSUS.Status == "0")
     {
+      
         mostrarModal = true;
         DescricaoModal = "CPF não localizado em nenhuma das dase de dados.";
 
@@ -28,7 +30,6 @@
         DescricaoAlerta = "CPF localizado na Base de Dados.";
         CorAlerta = "alert alert-success";
         mostrarAlerta = true;
-
         Model.pessoa.Status = string.Empty;
         Model.pessoaDataSUS.Status = string.Empty;
     }  
@@ -46,8 +47,9 @@
     <script src="/js/bootstrap.min.js"></script>
     <script type="text/javascript" src="/js/funcoes.js")'></script>
     <script>
+        window.mostrarCarregando = @Html.Raw(mostrarCarregando.ToString().ToLower());
         window.mostrarModal = @Html.Raw(mostrarModal.ToString().ToLower());
-        window.mostrarAlerta = @Html.Raw(mostrarAlerta.ToString().ToLower());
+        window.mostrarAlerta = @Html.Raw(mostrarAlerta.ToString().ToLower());     
         window.req = '@req';
     </script>
 </head>
@@ -55,7 +57,7 @@
 <body>
     <div class="container">
         <div class="container mt-5">
-            <center><h3>Consulte seu CPF</h3></center>
+            <center><a href="\" class="link-sem-sublinhado"><h3>Consulte seu CPF</h3></a></center>
             
             <!-- Formulario -->
             <form id="cpfForm" onsubmit="validateForm(event)" method="GET" action="/">
@@ -63,9 +65,11 @@
                     <label style="font-size:16px;" for="CPF">CPF</label>
                     <input asp-for="CPF" id="CPF" name="CPF" type="text" title="Informe somente números." oninput="process(this)" inputmode="numeric" pattern="[0-9]+" minlength="11" maxlength="14" required placeholder="Digite seu CPF: 99999999999" class="form-control" value="@Model.pessoa.CPF" />
                 </div>
-                <button id="submitButton" name="action" value="submit" type="submit" class="btn btn-primary btn-block">Consultar</button>
+                <button id="submitButton" name="action" value="submit" type="submit" class="btn btn-primary btn-block">Consultar</button>  
             </form>
-            
+
+       
+  
             <!-- Modal de CPF não Localizado -->
             <div class="modal fade" id="Modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                 <div class="modal-dialog modal-sm">
@@ -85,7 +89,19 @@
                     </div>
                 </div>
             </div>
-   
+
+            <div class="modal" id="modal-loading" data-backdrop="static">
+                <div class="modal-dialog modal-sm">
+                    <div class="modal-content">
+                        <div class="modal-body text-center">
+                            <div class="loading-spinner mb-2"></div>
+                            <div>Carregando...</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+ 
             <br/>
             <!-- Dados -->
             <div id="result" class="panel panel-default">
@@ -172,6 +188,8 @@
             <div id="Alerta" class="@CorAlerta" role="alert" hidden ="hidden">
                 @DescricaoAlerta
             </div>
+
+            
 
         </div>
     </div>

@@ -5,23 +5,23 @@ namespace CoreAPI.DataBase.SQLServer.Models
     public class RegistroPessoaDatasusDTO
     {
         public int? Id { get; set; } 
-        public string? CPF { get; set; } = string.Empty;
-        public string? Pai { get; set; } = string.Empty;
-        public string? Mae { get; set; } = string.Empty;
-        public string? MunicipioNascimento { get; set; } = string.Empty;
-        public string? Municipio { get; set; } = string.Empty;
-        public string? Logradouro { get; set; } = string.Empty;
-        public string? Numero { get; set; } = string.Empty;
-        public string? Bairro { get; set; } = string.Empty;
-        public string? CEP { get; set; } = string.Empty;
-        public string? RGNumero { get; set; } = string.Empty;
-        public string? RGOrgaoEmisor { get; set; } = string.Empty;
-        public string? RGUF { get; set; } = string.Empty;
-        public string? RGDataEmissao { get; set; } = string.Empty;
-        public string? CNS { get; set; } = string.Empty;
-        public string? Telefone { get; set; } = string.Empty;
-        public string? TelefoneSecundario { get; set; } = string.Empty;
-        public string? Status { get; set; } = string.Empty;
+        public string? CPF { get; set; } 
+        public string? Pai { get; set; } 
+        public string? Mae { get; set; } 
+        public string? MunicipioNascimento { get; set; } 
+        public string? Municipio { get; set; } 
+        public string? Logradouro { get; set; } 
+        public string? Numero { get; set; } 
+        public string? Bairro { get; set; } 
+        public string? CEP { get; set; } 
+        public string? RGNumero { get; set; }
+        public string? RGOrgaoEmisor { get; set; } 
+        public string? RGUF { get; set; }
+        public string? RGDataEmissao { get; set; }
+        public string? CNS { get; set; }
+        public string? Telefone { get; set; } 
+        public string? TelefoneSecundario { get; set; } 
+        public string? Status { get; set; }
 
         public static RegistroPessoaDatasusDTO FromRegistroPessoaDatasus(RegistroPessoaDatasus? registroPessoa)
         {

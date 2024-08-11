@@ -6,13 +6,28 @@ $(document).ready(function () {
         }, 8000);
     }
 
-
+    
     if (window.mostrarAlerta) {
         $('#Alerta').fadeIn(); // Exibe o alerta com efeito de desvanecimento
         setTimeout(function () {
             $('#Alerta').fadeOut(); // Oculta o alerta com efeito de desvanecimento
         }, 8000); // 3500 milissegundos = 3,5 segundos
-    }       
+    }   
+
+    $('#cpfForm').on('submit', function (event) {
+
+        if (window.mostrarCarregando) {
+            $('#modal-loading').modal('show');
+        }
+        else {
+            $('#modal-loading').modal('hide');
+        }
+
+    });
+
+
+
+
 });
 
 
@@ -46,6 +61,8 @@ function validateForm(event) {
     } else {
         input.setCustomValidity('');
     }
+
+  
 }
 
 

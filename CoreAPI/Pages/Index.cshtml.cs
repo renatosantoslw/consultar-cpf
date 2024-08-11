@@ -4,23 +4,29 @@ using CoreAPI.Logs;
 using CoreAPI.DataBase.SQLServer.Models;
 using CoreAPI.DataBase.SQLServer.Repositories.Entity;
 using Microsoft.AspNetCore.Mvc;
-using NuGet.Protocol.Core.Types;
 
 namespace CoreAPI.wwwroot.Pages
 {
     public class IndexModel : PageModel
     {       
-        private readonly ErrosWiew? _errosFront;
+        private readonly ErrosWiew? _errosFront = new();
         
-        private RegistroPessoa? apiResponse = new();
+        private RegistroPessoa? apiResponsePessoa = new();
         public RegistroPessoaDTO pessoa = new();
 
         private RegistroPessoaDatasus? apiResponseDataSUS = new();
         public RegistroPessoaDatasusDTO pessoaDataSUS = new();
 
+        private string _cpf = string.Empty;
+
+    
 
         [BindProperty(SupportsGet = true)]
-        public string CPF { get; set; }
+        public string CPF
+        {
+            get { return _cpf; }   
+            set { _cpf = value; }  
+        }
 
         public IndexModel(ErrosWiew? erros)
         {
@@ -32,40 +38,42 @@ namespace CoreAPI.wwwroot.Pages
         {
             if (action == "submit")
             {
+
                 if (_errosFront != null && !string.IsNullOrEmpty(_errosFront.Descricao))
                 {
                     Response.Redirect("/Erro");
                     return;
                 }
 
-                if (!string.IsNullOrEmpty(CPF))
+                if (!string.IsNullOrEmpty(_cpf))
                 {
+                 
+                    apiResponsePessoa = await GetApiDataAsync(_cpf);
+                    apiResponseDataSUS = await GetApiDataAsyncDataSUS(_cpf);
 
-                    apiResponse = await GetApiDataAsync(CPF);
-                    apiResponseDataSUS = await GetApiDataAsyncDataSUS(CPF);
 
-                    if (apiResponse != null)
+                    if (apiResponsePessoa != null)
                     {
                         Console.ForegroundColor = ConsoleColor.Green;
-                        Console.WriteLine($"CPF JBR_PF Localizado: {CPF}");
+                        Console.WriteLine($"CPF JBR_PF Localizado: {_cpf}");
                         Console.ResetColor();
 
-                        pessoa = RegistroPessoaDTO.FromRegistroPessoa(apiResponse);
+                        pessoa = RegistroPessoaDTO.FromRegistroPessoa(apiResponsePessoa);
                         pessoa.Status = "1";
                     }
                     else
                     {
                         Console.ForegroundColor = ConsoleColor.Red;
-                        Console.WriteLine($"CPF JBR_PF não Localizado: {CPF}");
+                        Console.WriteLine($"CPF JBR_PF não Localizado: {_cpf}");
                         Console.ResetColor();
-                        pessoa = RegistroPessoaDTO.FromRegistroPessoa(apiResponse);
-                        pessoa.CPF = CPF;
+                        pessoa = RegistroPessoaDTO.FromRegistroPessoa(apiResponsePessoa);
+                        pessoa.CPF = _cpf;
                     }
 
                     if (apiResponseDataSUS != null)
                     {
                         Console.ForegroundColor = ConsoleColor.Green;
-                        Console.WriteLine($"CPF DATASUS Localizado: {CPF}");
+                        Console.WriteLine($"CPF DATASUS Localizado: {_cpf}");
                         Console.ResetColor();
 
                         pessoaDataSUS = RegistroPessoaDatasusDTO.FromRegistroPessoaDatasus(apiResponseDataSUS);
@@ -74,18 +82,19 @@ namespace CoreAPI.wwwroot.Pages
                     else
                     {
                         Console.ForegroundColor = ConsoleColor.Red;
-                        Console.WriteLine($"CPF DATASUS não Localizado: {CPF}");
+                        Console.WriteLine($"CPF DATASUS não Localizado: {_cpf}");
                         Console.ResetColor();
 
                         pessoaDataSUS = RegistroPessoaDatasusDTO.FromRegistroPessoaDatasus(apiResponseDataSUS);
-                        pessoaDataSUS.CPF = CPF;
+                        pessoaDataSUS.CPF = _cpf;
                     }
-                }
+
+                
+                }             
+
             }
       
         }
-
-
 
         private async Task<RegistroPessoa?> GetApiDataAsync(string cpf)
         {

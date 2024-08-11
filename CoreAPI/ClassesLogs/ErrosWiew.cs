@@ -2,10 +2,9 @@
 {
     public class ErrosWiew
     {
-        public string? Cabecalho { get; set; } = null;
-        public string? Codigo { get; set; } = null;
-        public string? Descricao { get; set; } = null;
-        public string? Tipo { get; set; } = null;
-
+        public string? Cabecalho { get; set; } 
+        public string? Codigo { get; set; } 
+        public string? Descricao { get; set; } 
+        public string? Tipo { get; set; } 
     }
 }
