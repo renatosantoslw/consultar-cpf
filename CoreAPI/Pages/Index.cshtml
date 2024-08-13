@@ -12,14 +12,13 @@
     string DescricaoAlerta = string.Empty;
     string CorAlerta = string.Empty;
 
+  
 
     if (Model.pessoa.Status == "0" & Model.pessoaDataSUS.Status == "0")
     {
-
-      
+     
         mostrarModal = true;
         DescricaoModal = "CPF não localizado em nenhuma das dase de dados.";
-
         DescricaoAlerta = "CPF não localizado em nenhuma das dase de dados.";
         CorAlerta = "alert alert-warning";
         mostrarAlerta = true;
@@ -108,82 +107,86 @@
             <!-- Dados -->
             <div id="result" class="panel panel-default">
               <div class="panel-heading">Dados</div>
+
                 <div class="labelEspacamento">
-                    <table>
-                        <tr>
-                            <td><label class="labelAzul">Nome:</label></td>
-                            <td><span class="labelValue">@Model.pessoa.Nome</span></td>                           
-                        </tr>                  
-                        <tr>
-                            <td><label class="labelAzul">Gênero:</label></td>
-                            <td><span class="labelValue">@Model.pessoa.Genero</span></td>
-                        </tr>
-                        <tr>
-                            <td><label class="labelAzul">Data Nasc:</label></td>
-                            <td><span class="labelValue">@Model.pessoa.DataNascimento</span></td>
-                        </tr>
-                        <tr>
-                            <td><label class="labelAzul">CPF:</label></td>
-                            <td><span class="labelValue">@Model.pessoa.CPF</span></td>
-                        </tr>
-                        <tr>
-                            <td><label class="labelAzul">RG:</label></td>
-                            <td><span class="labelValue">@Model.pessoaDataSUS.RGNumero</span></td>
-                        </tr>
-                        <tr>
-                            <td><label class="labelAzul">Emissor:</label></td>
-                            <td><span class="labelValue">@Model.pessoaDataSUS.RGOrgaoEmisor</span></td>
-                        </tr>
-                        <tr>
-                            <td><label class="labelAzul">RG UF:</label></td>
-                            <td><span class="labelValue">@Model.pessoaDataSUS.RGUF</span></td>
-                        </tr>
-                        <tr>
-                            <td><label class="labelAzul">Pai:</label></td>
-                            <td><span class="labelValue">@Model.pessoaDataSUS.Pai</span></td>
-                        </tr>
-                        <tr>
-                            <td><label class="labelAzul">Mãe:</label></td>
-                            <td><span class="labelValue">@Model.pessoaDataSUS.Mae</span></td>
-                        </tr>
-                        <tr>
-                            <td><label class="labelAzul">Natual:</label></td>
-                            <td><span class="labelValue">@Model.pessoaDataSUS.MunicipioNascimento</span></td>
-                        </tr>
-                        <tr>
-                            <td><label class="labelAzul">Municipio:</label></td>
-                            <td><span class="labelValue">@Model.pessoaDataSUS.Municipio</span></td>
-                        </tr>
-                        <tr>
-                            <td><label class="labelAzul">Endereço:</label></td>
-                            <td><span class="labelValue">@Model.pessoaDataSUS.Logradouro</span></td>
-                        </tr>
-                        <tr>
-                            <td><label class="labelAzul">Numero:</label></td>
-                            <td><span class="labelValue">@Model.pessoaDataSUS.Numero</span></td>
-                        </tr>
-                        <tr>
-                            <td><label class="labelAzul">Bairro:</label></td>
-                            <td><span class="labelValue">@Model.pessoaDataSUS.Bairro</span></td>
-                        </tr>
-                        <tr>
-                            <td><label class="labelAzul">CEP:</label></td>
-                            <td><span class="labelValue">@Model.pessoaDataSUS.CEP</span></td>
-                        </tr>
-                        <tr>
-                            <td><label class="labelAzul">CNS:</label></td>
-                            <td><span class="labelValue">@Model.pessoaDataSUS.CNS</span></td>
-                        </tr>
-                        <tr>
-                            <td><label class="labelAzul">Telefone:</label></td>
-                            <td><span class="labelValue">@Model.pessoaDataSUS.Telefone</span></td>
-                        </tr>
-                        <tr>
-                            <td><label class="labelAzul">Telefone:</label></td>
-                            <td><span class="labelValue">@Model.pessoaDataSUS.TelefoneSecundario</span></td>
-                        </tr>
-                    </table>           
-                 </div>
+                   
+
+                            <table>
+                                <tr>
+                                    <td><label class="labelAzul">Nome:</label></td>
+                                    <td><span class="labelValue">@Model.pessoa.Nome</span></td>                           
+                                </tr>                  
+                                <tr>
+                                    <td><label class="labelAzul">Gênero:</label></td>
+                                    <td><span class="labelValue">@Model.pessoa.Genero</span></td>
+                                </tr>
+                                <tr>
+                                    <td><label class="labelAzul">Data Nasc:</label></td>
+                                    <td><span class="labelValue">@Model.pessoa.DataNascimento</span></td>
+                                </tr>
+                                <tr>
+                                    <td><label class="labelAzul">CPF:</label></td>
+                                    <td><span class="labelValue">@Model.pessoa.CPF</span></td>
+                                </tr>
+                                <tr>
+                                    <td><label class="labelAzul">RG:</label></td>
+                                    <td><span class="labelValue">@Model.pessoaDataSUS.RGNumero</span></td>
+                                </tr>
+                                <tr>
+                                    <td><label class="labelAzul">Emissor:</label></td>
+                                    <td><span class="labelValue">@Model.pessoaDataSUS.RGOrgaoEmisor</span></td>
+                                </tr>
+                                <tr>
+                                    <td><label class="labelAzul">RG UF:</label></td>
+                                    <td><span class="labelValue">@Model.pessoaDataSUS.RGUF</span></td>
+                                </tr>
+                                <tr>
+                                    <td><label class="labelAzul">Pai:</label></td>
+                                    <td><span class="labelValue">@Model.pessoaDataSUS.Pai</span></td>
+                                </tr>
+                                <tr>
+                                    <td><label class="labelAzul">Mãe:</label></td>
+                                    <td><span class="labelValue">@Model.pessoaDataSUS.Mae</span></td>
+                                </tr>
+                                <tr>
+                                    <td><label class="labelAzul">Natual:</label></td>
+                                    <td><span class="labelValue">@Model.pessoaDataSUS.MunicipioNascimento</span></td>
+                                </tr>
+                                <tr>
+                                    <td><label class="labelAzul">Municipio:</label></td>
+                                    <td><span class="labelValue">@Model.pessoaDataSUS.Municipio</span></td>
+                                </tr>
+                                <tr>
+                                    <td><label class="labelAzul">Endereço:</label></td>
+                                    <td><span class="labelValue">@Model.pessoaDataSUS.Logradouro</span></td>
+                                </tr>
+                                <tr>
+                                    <td><label class="labelAzul">Numero:</label></td>
+                                    <td><span class="labelValue">@Model.pessoaDataSUS.Numero</span></td>
+                                </tr>
+                                <tr>
+                                    <td><label class="labelAzul">Bairro:</label></td>
+                                    <td><span class="labelValue">@Model.pessoaDataSUS.Bairro</span></td>
+                                </tr>
+                                <tr>
+                                    <td><label class="labelAzul">CEP:</label></td>
+                                    <td><span class="labelValue">@Model.pessoaDataSUS.CEP</span></td>
+                                </tr>
+                                <tr>
+                                    <td><label class="labelAzul">CNS:</label></td>
+                                    <td><span class="labelValue">@Model.pessoaDataSUS.CNS</span></td>
+                                </tr>
+                                <tr>
+                                    <td><label class="labelAzul">Telefone:</label></td>
+                                    <td><span class="labelValue">@Model.pessoaDataSUS.Telefone</span></td>
+                                </tr>
+                                <tr>
+                                    <td><label class="labelAzul">Telefone:</label></td>
+                                    <td><span class="labelValue">@Model.pessoaDataSUS.TelefoneSecundario</span></td>
+                                </tr>
+                            </table>
+                   
+                </div>
             </div>
           
 

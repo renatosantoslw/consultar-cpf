@@ -66,14 +66,18 @@ namespace CoreAPI.wwwroot.Pages
 
                 if (_PessoasPaginacao.Count != 0 || apiResponsePessoa != null && apiResponsePessoa.Any())
                 {
+             
                     TotalPages = (int)Math.Ceiling(_PessoasPaginacao.Count / (double)PageSize);
-                    
+                    TotalPages = TotalPages > 0 ? TotalPages : 1; // Ensure TotalPages is at least 1
+
+
+
                     _Pessoas = _PessoasPaginacao
-                        .Skip((PageNumber - 1) * PageSize)
+                        .Skip((CurrentPage - 1) * PageSize)
                         .Take(PageSize)
                         .ToList();
 
-                    
+
                     Status = "1";
 
                     if (PageNumber > 1)
@@ -93,6 +97,12 @@ namespace CoreAPI.wwwroot.Pages
                     Console.WriteLine($"Nome não localizado: {_nome}");
                     Console.ResetColor();
                 }
+
+                // Adjust PageNumber if it's out of range
+                if (CurrentPage < 1) CurrentPage = 1;              
+
+                if (CurrentPage >= TotalPages) CurrentPage = TotalPages;
+
             }
 
 
@@ -124,13 +134,6 @@ namespace CoreAPI.wwwroot.Pages
         }
 
 
-
-
-
-
-
-
-
         private void HandleErrorResponse(System.Net.HttpStatusCode statusCode)
         {
             if (_errosFront != null)
@@ -156,10 +159,6 @@ namespace CoreAPI.wwwroot.Pages
                     case System.Net.HttpStatusCode.MethodNotAllowed:
                         _errosFront.Codigo = "405";
                         _errosFront.Descricao = "Método não permitido.";
-                        break;
-                    default:
-                        _errosFront.Codigo = "Unknown";
-                        _errosFront.Descricao = "Erro desconhecido.";
                         break;
                 }
             }

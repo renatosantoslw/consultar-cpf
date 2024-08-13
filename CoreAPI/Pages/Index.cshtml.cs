@@ -19,7 +19,7 @@ namespace CoreAPI.wwwroot.Pages
 
         private string _cpf = string.Empty;
 
-    
+        
 
         [BindProperty(SupportsGet = true)]
         public string CPF
