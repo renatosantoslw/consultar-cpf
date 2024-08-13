@@ -46,14 +46,16 @@ namespace CoreAPI.Controllers
                     if (string.IsNullOrWhiteSpace(cpf))
                         return Results.BadRequest("CPF não pode ser nulo ou vazio.");
 
-                    return await db.RegistroPessoa.FindAsync(cpf)
-                        is RegistroPessoa registro
+                    var registro = await db.RegistroPessoa
+                        .AsNoTracking()
+                        .FirstOrDefaultAsync(r => r.CPF == cpf);
+                   
+                    return registro is not null
                         ? Results.Ok(registro)
                         : Results.NotFound("CPF não localizado.");
                 }
                 catch (Exception ex)
-                {
-                    
+                {                   
                     ErroLogsInstance.GerarLogErro(ex, $"Maps", $"app.MapGet(getByCPF) = {cpf}");              
                     return null;
                 }
@@ -74,9 +76,12 @@ namespace CoreAPI.Controllers
                     if (string.IsNullOrWhiteSpace(nome))
                         return Results.BadRequest("Nome não pode ser nulo ou vazio.");
 
-                    var registros = await db.RegistroPessoa.Where(r => r.Nome == nome).ToListAsync();
+                    var registros = await db.RegistroPessoa
+                        .AsNoTracking()
+                        .Where(r => r.Nome == nome)
+                        .ToListAsync();
 
-                    return registros is not null && registros.Any()
+                    return registros.Any()
                         ? Results.Ok(registros)
                         : Results.NotFound("Nome não localizado.");
                 }
@@ -102,11 +107,12 @@ namespace CoreAPI.Controllers
                         return Results.BadRequest("CPF não pode ser nulo ou vazio.");
 
                     var registroDataSUS = await db.RegistroPessoaDatasus
+                        .AsNoTracking()
                         .FirstOrDefaultAsync(r => r.CPF == cpf);
 
                     return registroDataSUS is not null
-                        ? Results.Ok(registroDataSUS)
-                        : Results.NotFound("CPF DATASUS não localizado.");
+                          ? Results.Ok(registroDataSUS)
+                          : Results.NotFound("CPF DATASUS não localizado.");
                 }
                 catch (Exception ex)
                 {

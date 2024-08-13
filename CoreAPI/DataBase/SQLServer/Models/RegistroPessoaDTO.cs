@@ -21,5 +21,17 @@ namespace CoreAPI.DataBase.SQLServer.Models
                 Status = string.IsNullOrEmpty(registroPessoa?.Status) ? "0" : registroPessoa.Status,
             };
         }
+
+
+        public static List<RegistroPessoaDTO> FromRegistroPessoaList(List<RegistroPessoa?> registroPessoas)
+        {
+            return registroPessoas
+                .Where(rp => rp != null) // Filtrar objetos nulos
+                .Select(rp => FromRegistroPessoa(rp))
+                .ToList();
+        }
+
+
+
     }
 }

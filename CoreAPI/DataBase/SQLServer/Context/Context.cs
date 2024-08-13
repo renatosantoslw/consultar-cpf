@@ -11,14 +11,13 @@ namespace CoreAPI.DataBase.SQLServer.Context
             base.Database.SetCommandTimeout(200);
         }
 
-
         public DbSet<RegistroPessoa> RegistroPessoa { get; set; }
         public DbSet<RegistroPessoaDatasus> RegistroPessoaDatasus { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            // Configura os Indices não Clusterizados:
 
+            // Configura os Indices não Clusterizados:
             modelBuilder.Entity<RegistroPessoa>()
                         .HasIndex(p => p.Nome)
                         .IsClustered(false)

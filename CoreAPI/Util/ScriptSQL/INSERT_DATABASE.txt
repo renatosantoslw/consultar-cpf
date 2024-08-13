@@ -1,0 +1,58 @@
+--DELETE FROM [RegistroPessoa]
+--DELETE FROM [RegistroPessoaDatasus]
+
+INSERT INTO [dbo].[RegistroPessoa] (
+    [CPF], 
+    [Nome], 
+    [Genero], 
+    [DataNascimento], 
+    [Status]
+) VALUES
+    ('11111111111', 'João da Silva', 'Masculino', '01-01-1980', ''),
+    ('22222222222', 'Maria Oliveira', 'Feminino', '02-02-1981', ''),
+    ('33333333333', 'Jose Santos', 'Masculino', '03-03-1982', ''),
+    ('44444444444', 'Ana Costa', 'Feminino', '04-04-1983', ''),
+    ('55555555555', 'Carlos Pereira', 'Masculino', '05-05-1984', ''),
+    ('66666666666', 'Fernanda Almeida', 'Feminino', '06-06-1985', ''),
+    ('77777777777', 'José Oliveira', 'Masculino', '07-07-1986', ''),
+    ('88888888888', 'Patrícia Lima', 'Feminino', '08-08-1987', ''),
+    ('99999999999', 'Roberto Silva', 'Masculino', '09-09-1988', ''),
+    ('00000000000', 'Juliana Fernandes', 'Feminino', '10-10-1989', ''),
+
+	('00000000099', 'Roberto Carlos', 'Masculino', '10-10-1989', '')
+
+GO
+
+INSERT INTO [dbo].[RegistroPessoaDatasus] (
+    [CPF], 
+    [Pai], 
+    [Mae], 
+    [MunicipioNascimento], 
+    [Municipio], 
+    [Logradouro], 
+    [Numero], 
+    [Bairro], 
+    [CEP], 
+    [RGNumero], 
+    [RGOrgaoEmisor], 
+    [RGUF], 
+    [RGDataEmissao], 
+    [CNS], 
+    [Telefone], 
+    [TelefoneSecundario], 
+    [Status]
+) VALUES
+    ('11111111111', 'José da Silva', 'Maria da Silva', 'São Paulo', 'São Paulo', 'Rua Exemplo', '123', 'Centro', '01000-000', '12345678', 'SSP', 'SP', '01-01-2000', '123456789123456', '11987654321', '11987654322', ''),
+    ('22222222222', 'Carlos Oliveira', 'Ana Oliveira', 'Rio de Janeiro', 'Rio de Janeiro', 'Avenida Teste', '456', 'Lagoa', '22222-222', '23456789', 'SSP', 'RJ', '02-02-2001', '234567890123456', '21987654321', '21987654322', ''),
+    ('33333333333', 'Pedro Santos', 'Fernanda Santos', 'Belo Horizonte', 'Belo Horizonte', 'Rua Modelo', '789', 'Santo Agostinho', '33333-333', '34567890', 'SSP', 'MG', '03-03-2002', '345678901234567', '31987654321', '31987654322', ''),
+    ('44444444444', 'João Costa', 'Claudia Costa', 'Curitiba', 'Curitiba', 'Rua Exemplo 2', '101', 'Centro', '40000-000', '45678901', 'SSP', 'PR', '04-04-2003', '456789012345678', '41987654321', '41987654322', ''),
+    ('55555555555', 'Marcelo Pereira', 'Silvia Pereira', 'Porto Alegre', 'Porto Alegre', 'Avenida Exemplo', '202', 'Moinhos de Vento', '50000-000', '56789012', 'SSP', 'RS', '05-05-2004', '567890123456789', '51987654321', '51987654322', ''),
+    ('66666666666', 'Fernando Almeida', 'Juliana Almeida', 'São Luís', 'São Luís', 'Rua Central', '303', 'Centro', '65000-000', '67890123', 'SSP', 'MA', '06-06-2005', '678901234567890', '63987654321', '63987654322', ''),
+    ('77777777777', 'Gustavo Oliveira', 'Beatriz Oliveira', 'Fortaleza', 'Fortaleza', 'Avenida Beira-Mar', '404', 'Aldeota', '60000-000', '78901234', 'SSP', 'CE', '07-07-2006', '789012345678901', '64987654321', '64987654322', ''),
+    ('88888888888', 'Roberto Lima', 'Mariana Lima', 'Belém', 'Belém', 'Rua das Flores', '505', 'São Brás', '66000-000', '89012345', 'SSP', 'PA', '08-08-2007', '890123456789012', '65987654321', '65987654322', ''),
+    ('99999999999', 'Felipe Silva', 'Luciana Silva', 'Manaus', 'Manaus', 'Avenida Amazonas Exemplo', '606', 'Centro', '69000-000', '90123456', 'SSP', 'AM', '09-09-2008', '901234567890123', '66987654321', '66987654322', ''),
+    ('00000000000', 'Marcos Fernandes', 'Eduarda Fernandes', 'Recife', 'Recife', 'Rua dos Palmares Exemplo', '707', 'Boa Viagem', '50000-000', '01234567', 'SSP', 'PE', '10-10-2009', '012345678901234', '67987654321', '67987654322', ''),
+
+	('00000000095', 'Carlos Eduardo', 'Eduarda Fernandes', 'Recife', 'Recife', 'Rua dos Palmares Exemplo', '707', 'Boa Viagem', '50000-000', '01234567', 'SSP', 'PE', '10-10-2009', '012345678901234', '67987654321', '67987654322', '')
+
+

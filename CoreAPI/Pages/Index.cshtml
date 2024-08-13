@@ -12,10 +12,10 @@
     string DescricaoAlerta = string.Empty;
     string CorAlerta = string.Empty;
 
-    var req = Model.CPF;
 
     if (Model.pessoa.Status == "0" & Model.pessoaDataSUS.Status == "0")
     {
+
       
         mostrarModal = true;
         DescricaoModal = "CPF não localizado em nenhuma das dase de dados.";
@@ -50,7 +50,6 @@
         window.mostrarCarregando = @Html.Raw(mostrarCarregando.ToString().ToLower());
         window.mostrarModal = @Html.Raw(mostrarModal.ToString().ToLower());
         window.mostrarAlerta = @Html.Raw(mostrarAlerta.ToString().ToLower());     
-        window.req = '@req';
     </script>
 </head>
 
@@ -68,8 +67,9 @@
                 <button id="submitButton" name="action" value="submit" type="submit" class="btn btn-primary btn-block">Consultar</button>  
             </form>
 
-       
-  
+            <br>
+            <a href="/nome" class="btn btn-primary btn-block">Consultar por Nome</a>
+
             <!-- Modal de CPF não Localizado -->
             <div class="modal fade" id="Modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                 <div class="modal-dialog modal-sm">
@@ -90,6 +90,8 @@
                 </div>
             </div>
 
+           
+            <!-- Modal carregando -->
             <div class="modal" id="modal-loading" data-backdrop="static">
                 <div class="modal-dialog modal-sm">
                     <div class="modal-content">
@@ -101,7 +103,7 @@
                 </div>
             </div>
 
- 
+
             <br/>
             <!-- Dados -->
             <div id="result" class="panel panel-default">
@@ -184,14 +186,15 @@
                  </div>
             </div>
           
+
             <!-- Mensagem Rodape -->
             <div id="Alerta" class="@CorAlerta" role="alert" hidden ="hidden">
                 @DescricaoAlerta
             </div>
-
-            
-
+          
         </div>
+    
+    
     </div>
 
 </body>

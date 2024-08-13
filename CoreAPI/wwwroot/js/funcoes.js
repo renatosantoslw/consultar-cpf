@@ -1,9 +1,9 @@
-$(document).ready(function () {
+$(function () {
     if (window.mostrarModal) {
         $('#Modal').modal('show');
         setTimeout(function () {
             $('#Modal').modal('hide');
-        }, 8000);
+        }, 5000);
     }
 
     
@@ -11,10 +11,26 @@ $(document).ready(function () {
         $('#Alerta').fadeIn(); // Exibe o alerta com efeito de desvanecimento
         setTimeout(function () {
             $('#Alerta').fadeOut(); // Oculta o alerta com efeito de desvanecimento
-        }, 8000); // 3500 milissegundos = 3,5 segundos
+        }, 5000); // 3500 milissegundos = 3,5 segundos
     }   
 
+
     $('#cpfForm').on('submit', function (event) {
+
+        console.log("Modal CPF carregando...");
+
+        if (window.mostrarCarregando) {
+            $('#modal-loading').modal('show');
+        }
+        else {
+            $('#modal-loading').modal('hide');
+        }
+    });
+
+
+    $('#nomeForm').on('submit', function (event) {
+
+        console.log("Modal Nome carregando...");
 
         if (window.mostrarCarregando) {
             $('#modal-loading').modal('show');
@@ -24,9 +40,6 @@ $(document).ready(function () {
         }
 
     });
-
-
-
 
 });
 

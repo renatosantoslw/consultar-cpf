@@ -32,12 +32,9 @@ builder.Services.AddHttpLogging(options =>
 */
 
 builder.Services.AddSingleton<ErrosWiew>();
-
 builder.Services.AddHttpContextAccessor();
-
 builder.Services.AddDirectoryBrowser();
 builder.Services.AddRazorPages();
-
 builder.Services.AddDbContext<Context>();
 
 builder.WebHost.UseUrls("http://0.0.0.0:5000");
@@ -52,6 +49,12 @@ builder.Services.AddSwaggerGen(options =>
     });
 });
 
+
+builder.Logging.ClearProviders(); // Limpa os provedores de log padrão
+builder.Logging.AddConsole(); // Adiciona logging para o console
+
+
+
 //Oculta alguns logs:
 builder.Logging.AddFilter("Microsoft.EntityFrameworkCore.Database.Command", LogLevel.None);
 builder.Logging.AddFilter("Microsoft.Hosting.Lifetime", LogLevel.None);
@@ -62,13 +65,14 @@ builder.Logging.AddFilter("Microsoft.AspNetCore.Diagnostics.DeveloperExceptionPa
 //builder.Logging.AddFilter("CoreAPI", LogLevel.Warning);
 
 var app = builder.Build();
-app.UseMiddleware<ClientIpMiddleware>();
 
 
-app.MapControllers();
-app.MapRazorPages();
+
 app.UseStaticFiles();
 app.UseRouting();
+app.UseMiddleware<ClientIpMiddleware>();
+app.MapControllers();
+app.MapRazorPages();
 app.MapSwagger();
 app.UseSwaggerUI();
 
@@ -125,7 +129,7 @@ async Task VerificaDBExiste(IServiceProvider services, ILogger logger, ErrosWiew
     }
     catch (Exception ex)
     {
-        erroLogs.GerarLogErro(ex, "Program", "VerificaDBExiste");
+        erroLogs?.GerarLogErro(ex, "Program", "VerificaDBExiste");
         logger.LogCritical($"Erro: {ex.Message}");
         logger.LogCritical($"Erro Critico na Inicializacao... API será reinicializada...");
         logger.LogCritical($"API será reinicializada...");

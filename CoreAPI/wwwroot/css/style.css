@@ -44,11 +44,17 @@ p {
 
 table td {
     text-align: left;
+   
 }
 
 .link-sem-sublinhado:hover {
     text-decoration:none;
     
+}
+
+.thNome {
+    padding-top: 9px;
+    padding-right: 100px;
 }
 
 

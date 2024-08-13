@@ -96,6 +96,8 @@ namespace CoreAPI.wwwroot.Pages
       
         }
 
+
+
         private async Task<RegistroPessoa?> GetApiDataAsync(string cpf)
         {
             var apiUrl = $"http://localhost:5000/getByCPF/{cpf}";
@@ -172,6 +174,11 @@ namespace CoreAPI.wwwroot.Pages
             }
 
         }
+
+
+
+
+
 
         private async Task<RegistroPessoaDatasus?> GetApiDataAsyncDataSUS(string cpf)
         {
