@@ -2,7 +2,7 @@
 Simples projeto de consulta de CPF <br> 
 Back-end: .NET Core 8 - Minimal API <br>
 Front-end: Razor Pages, HTML, CSS, JS, Bootstrap <br>
-ORM: Entity Framework<br>
+ORM: Entity Framework - Code First<br>
 Banco de Dados: SQL Server <br>
 <hr>
 
