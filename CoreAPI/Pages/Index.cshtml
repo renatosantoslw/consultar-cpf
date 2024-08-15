@@ -10,9 +10,7 @@
 
     string DescricaoModal = string.Empty;
     string DescricaoAlerta = string.Empty;
-    string CorAlerta = string.Empty;
-
-  
+    string CorAlerta = string.Empty; 
 
     if (Model.pessoa.Status == "0" & Model.pessoaDataSUS.Status == "0")
     {
@@ -57,11 +55,11 @@
         <div class="container mt-5">
             <center><a href="\" class="link-sem-sublinhado"><h3>Consulte seu CPF</h3></a></center>
             
-            <!-- Formulario -->
-            <form id="cpfForm" onsubmit="validateForm(event)" method="GET" action="/">
+            <!-- Formulário de Pesquisa CPF-->
+            <form id="cpfForm" onsubmit="validateFormCPF(event)" method="GET" action="/">
                 <div class="form-group">
                     <label style="font-size:16px;" for="CPF">CPF</label>
-                    <input asp-for="CPF" id="CPF" name="CPF" type="text" title="Informe somente números." oninput="process(this)" inputmode="numeric" pattern="[0-9]+" minlength="11" maxlength="14" required placeholder="Digite seu CPF: 99999999999" class="form-control" value="@Model.pessoa.CPF" />
+                    <input asp-for="CPF" id="CPF" name="CPF" type="text" required title="Informe somente números." oninput="processCPF(this)" inputmode="numeric" pattern="[0-9]+" minlength="11" maxlength="14" required placeholder="Digite seu CPF: 99999999999" class="form-control" value="@Model.pessoa.CPF" />
                 </div>
                 <button id="submitButton" name="action" value="submit" type="submit" class="btn btn-primary btn-block">Consultar</button>  
             </form>

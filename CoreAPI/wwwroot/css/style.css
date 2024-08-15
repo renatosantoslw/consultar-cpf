@@ -81,7 +81,26 @@ table td {
 
 #result {
     overflow-x: auto;
+
 }
+
+
+.fixed-pagination {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    background-color: #f5f5f5; /* Opcional: Cor de fundo para o fundo da paginação */
+    border-top: 1px solid #ddd; /* Opcional: Linha superior para separar do conteúdo */
+    /*padding: 12px;  Espaçamento interno */
+}
+
+.panel {
+    position: relative;
+}
+
+
+
 
 
 

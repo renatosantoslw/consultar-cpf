@@ -12,7 +12,9 @@ namespace CoreAPI.wwwroot.Pages
 {
     public class IndexNomeModel : PageModel
     {
-        private readonly ErrosWiew? _errosFront = new();  
+        private readonly ErrosWiew? _errosFront;
+        private readonly ILogger<IndexNomeModel> _logger;
+
         private List<RegistroPessoa?> apiResponsePessoa  { get; set; } = new ();
         public List<RegistroPessoaDTO> _Pessoas { get; set; } = new();
 
@@ -34,20 +36,27 @@ namespace CoreAPI.wwwroot.Pages
         }
 
         [BindProperty(SupportsGet = true)]
-        public int PageNumber { get; set; } = 1;
+        public int Pagina { get; set; } = 1;
 
         private const int PageSize = 5;
 
-        public IndexNomeModel(ErrosWiew? erros)
+        public IndexNomeModel(ILogger<IndexNomeModel> logger, ErrosWiew? erros)
         {
+            _logger = logger;
             _errosFront = erros;
         }
 
-        public async Task OnGetAsync(string action, string Nome, int PageNumber = 1)
+
+        public void OnGetLimpar()
         {
-            CurrentPage = PageNumber;
+            // Lógica para o método Clear
+            _PessoasPaginacao.Clear();
+        }
+
+        public async Task OnGetAsync(string action, string Nome, int Pagina = 1)
+        {
+            CurrentPage = Pagina;
             _nome = Nome;
-      
 
             if (!string.IsNullOrEmpty(_nome))
             {
@@ -55,6 +64,12 @@ namespace CoreAPI.wwwroot.Pages
                 if (action == "submit")
                 {
                     _PessoasPaginacao.Clear();
+
+                    if (string.IsNullOrEmpty(_nome) || !IsValidNOME(_nome))
+                    {
+                        SetErrorView(@"\nome","Erro ao validar o campo: Nome", "", "-O Campo Nome deve conter: \n•Somente Letras \n•Minimo de caracteres: 3 \n•Máximo de caracteres: 100");
+                        return;
+                    }
                 }
 
 
@@ -80,7 +95,7 @@ namespace CoreAPI.wwwroot.Pages
 
                     Status = "1";
 
-                    if (PageNumber > 1)
+                    if (Pagina > 1)
                     {
                         Status = "2";
                     }
@@ -98,21 +113,14 @@ namespace CoreAPI.wwwroot.Pages
                     Console.ResetColor();
                 }
 
-                // Adjust PageNumber if it's out of range
+                // Adjust Pagina if it's out of range
                 if (CurrentPage < 1) CurrentPage = 1;              
 
                 if (CurrentPage >= TotalPages) CurrentPage = TotalPages;
 
             }
-
-
             
         }
-
-
-
-
-
 
         private async Task<List<RegistroPessoa?>> GetPessoasByNomeAsync(string nome)
         {
@@ -141,27 +149,51 @@ namespace CoreAPI.wwwroot.Pages
                 switch (statusCode)
                 {
                     case System.Net.HttpStatusCode.InternalServerError:
-                        _errosFront.Codigo = "500";
-                        _errosFront.Descricao = "Erro interno no servidor.";
+                        _logger.LogError("InternalServerError");
+                        SetErrorView(@"\nome", "Erro", "500", "Erro interno no servidor.");
                         break;
+
                     case System.Net.HttpStatusCode.BadRequest:
-                        _errosFront.Codigo = "400";
-                        _errosFront.Descricao = "Solicitação inválida.";
+                        _logger.LogError("BadRequest");
+                        SetErrorView(@"\nome","Erro", "400", "Solicitação inválida.");
                         break;
+
                     case System.Net.HttpStatusCode.Unauthorized:
-                        _errosFront.Codigo = "401";
-                        _errosFront.Descricao = "Não autorizado. Verifique suas credenciais.";
+                        _logger.LogError("Unauthorized");
+                        SetErrorView(@"\nome","Erro", "401", "Não autorizado. Verifique suas credenciais.");
                         break;
+
                     case System.Net.HttpStatusCode.Forbidden:
-                        _errosFront.Codigo = "403";
-                        _errosFront.Descricao = "Acesso proibido. Você não tem permissão.";
+                        _logger.LogError("Forbidden");
+                        SetErrorView(@"\nome","Erro", "403", "Acesso proibido. Você não tem permissão.");
                         break;
+
                     case System.Net.HttpStatusCode.MethodNotAllowed:
-                        _errosFront.Codigo = "405";
-                        _errosFront.Descricao = "Método não permitido.";
+                        _logger.LogError("MethodNotAllowed");
+                        SetErrorView(@"\nome","Erro", "405", "Método não permitido.");
                         break;
                 }
             }
+        }
+
+        private bool IsValidNOME(string nome)
+        {
+            int minLength = 3;  // Defina o comprimento mínimo desejado
+            int maxLength = 100; // Defina o comprimento máximo desejado
+
+            // Verifica se o comprimento da string está dentro dos limites e se contém apenas letras e espaços em branco
+            return nome.Length >= minLength && nome.Length <= maxLength &&
+                   nome.All(c => char.IsLetter(c) || char.IsWhiteSpace(c));
+        }
+
+        private void SetErrorView(string pagina, string cabecalho, string codigo, string descricao)
+        {
+            _errosFront.Codigo = codigo;
+            _errosFront.Descricao = descricao;
+            _errosFront.Cabecalho = cabecalho;
+            _errosFront.Pagina = pagina;
+            Response.Redirect("/Erro");
+            return;
         }
     }
 }

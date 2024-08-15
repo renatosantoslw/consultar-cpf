@@ -10,15 +10,17 @@ namespace CoreAPI.wwwroot.Pages
 
         public string? pDescricao = null;
         public string? pCabecalho = null;
-        public string? pCodigo = null;   
-        
+        public string? pCodigo = null;
+   
+
         public ErroModel(ErrosWiew erros)
         {
             _erros = erros;
 
             pDescricao = _erros.Descricao;
             pCabecalho = _erros.Cabecalho;
-            pCodigo = _erros.Codigo;    
+            pCodigo = _erros.Codigo;
+       
         }
 
         public void OnGet()
@@ -33,6 +35,7 @@ namespace CoreAPI.wwwroot.Pages
             _erros.Cabecalho = null;
             _erros.Codigo = null;
             _erros.Tipo = null;
+    
         }
     }
 }
